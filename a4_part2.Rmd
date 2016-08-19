@@ -1,0 +1,28 @@
+---
+title: "Assignment 4 Question 2 part C Network visualization"
+author: "Vishesh Kakarala"
+date: "April 11, 2016"
+output: html_document
+---
+```{r echo = F,message= F}
+library('stats')
+library('networkD3')
+library('igraph')
+library('twitteR')
+library('RCurl')
+library('ngram')
+library('js')
+library('tau')
+library('tm')
+library('stringdist')
+```
+
+
+```{r echo= F}
+network_tw <- read.csv("~/Assignment 4/Twitter_network.csv", row.names=1)
+```
+c) Visualize the network (try using ggplot2 or networkD3 libraries).
+```{r }
+simpleNetwork(network_tw, zoom =T)
+```
+

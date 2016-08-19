@@ -1,0 +1,25 @@
+{
+    "contents" : "",
+    "created" : 1460439820612.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "DFCE0066",
+    "lastKnownWriteTime" : 7011605692497750387,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "6nybmhmhl8",
+        "caption" : "degree_nw",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=degree_nw&cache_key=6nybmhmhl8",
+        "displayedObservations" : "25769",
+        "environment" : "",
+        "object" : "degree_nw",
+        "totalObservations" : "25769",
+        "variables" : "2"
+    },
+    "relative_order" : 12,
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

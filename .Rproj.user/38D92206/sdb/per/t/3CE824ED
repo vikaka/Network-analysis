@@ -1,0 +1,18 @@
+{
+    "contents" : "---\ntitle: \"Assignment 4 Question 2 part C Network visualization\"\nauthor: \"Vishesh Kakarala\"\ndate: \"April 11, 2016\"\noutput: html_document\n---\n```{r echo = F,message= F}\nlibrary('stats')\nlibrary('networkD3')\nlibrary('igraph')\nlibrary('twitteR')\nlibrary('RCurl')\nlibrary('ngram')\nlibrary('js')\nlibrary('tau')\nlibrary('tm')\nlibrary('stringdist')\n```\n\n\n```{r echo= F}\nnetwork_tw <- read.csv(\"~/Assignment 4/Twitter_network.csv\", row.names=1)\n```\nc) Visualize the network (try using ggplot2 or networkD3 libraries).\n```{r }\nsimpleNetwork(network_tw, zoom =T)\n```\n\n",
+    "created" : 1460426693890.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3556515069",
+    "id" : "3CE824ED",
+    "lastKnownWriteTime" : 1460448335,
+    "path" : "~/Assignment 4/a4_part2.Rmd",
+    "project_path" : "a4_part2.Rmd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 9,
+    "source_on_save" : false,
+    "type" : "r_markdown"
+}

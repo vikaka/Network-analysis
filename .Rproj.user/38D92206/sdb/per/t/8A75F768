@@ -1,0 +1,18 @@
+{
+    "contents" : "\n\nlibrary(\"twitteR\")\n\n\nconsumer_key <- 'JNQcRToX7L0sQmtvT1pegIrfs'\nconsumer_secret <- '8IKVhuSecjbTdlEbkqzyktGFcl47zlQGouQz8ltcAgTkgMdywL'\naccess_token <- '73908899-RgxpF9n30enPFxpnKQYKqCc2Qev3FVvWgpF57LyP1'\naccess_secret <- 'LgXhCc5WSxm3c7gpsmgPMc7aA3ih1L8h9AA6rOB3nMlQ8'\nsetup_twitter_oauth(consumer_key , consumer_secret, access_token, access_secret)\n\n\n\ntw.df <- do.call(\"rbind\", lapply(searchTwitter(\"#SXSW2016\",n =100,lang= \"en\"), as.data.frame))\n\nusernames <- as.character((1:100))\n\nfor( i in 1:100)\n{\n  usernames.object[i] <- data.frame(getUser(tw.df$screenName[i]))\n  \n  \n}\ntest$getFriends()\n",
+    "created" : 1459283099046.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1131340855",
+    "id" : "8A75F768",
+    "lastKnownWriteTime" : 1459889444,
+    "path" : "~/Assignment 4/test.R",
+    "project_path" : "test.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

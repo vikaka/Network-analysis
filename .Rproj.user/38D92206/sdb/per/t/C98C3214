@@ -1,0 +1,25 @@
+{
+    "contents" : "",
+    "created" : 1460416541296.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "C98C3214",
+    "lastKnownWriteTime" : 31244048835477601,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "8s4xsvb4wf",
+        "caption" : "ngramnetwork",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=ngramnetwork&cache_key=8s4xsvb4wf",
+        "displayedObservations" : "10000",
+        "environment" : "",
+        "object" : "ngramnetwork",
+        "totalObservations" : "10000",
+        "variables" : "3"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

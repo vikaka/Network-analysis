@@ -1,0 +1,18 @@
+{
+    "contents" : "library(ggplot2)\nlibrary(geomnet)\nlibrary(gcookbook)\nlibrary(reshape2)\n\nlibrary(networkD3)\nlibrary(igraph)\n#read the data\n\nconsumer_key <- 'JNQcRToX7L0sQmtvT1pegIrfs'\nconsumer_secret <- '8IKVhuSecjbTdlEbkqzyktGFcl47zlQGouQz8ltcAgTkgMdywL'\naccess_token <- '73908899-RgxpF9n30enPFxpnKQYKqCc2Qev3FVvWgpF57LyP1'\naccess_secret <- 'LgXhCc5WSxm3c7gpsmgPMc7aA3ih1L8h9AA6rOB3nMlQ8'\n\n\n\nkeys <- read.table(\"~/Assignment 4/keys.txt\", sep = \"\\t\", fill = FALSE, col.names = c(\"node_id\",\"name\"))\nSubs <- read.table(\"~/Assignment 4/subs.txt\", sep = \"\\t\", fill = FALSE, col.names = c(\"ingredient_A\",\"ingredient_B\"))\n\n#visualize the data\n\ndata = Subs\n\nggplot(data = Subs, aes(from_id = ingredient_A, to_id = ingredient_B)) + geom_net(vertices = keys$name, aes(colour = \"blue\"))\n\nggplot(Subs)\n\ngrap <- induced.subgraph(Subs,idx)\ngraph <- get.data.frame(Subs,what = \"edges\")\nggplot(graph)\n\ngraph <- graph.data.frame(Subs,keys, directed = T)\ndegree(graph,mode = \"Total\")\ndegree_distribution(graph)\nplot(graph)\nsimpleNetwork(Subs, zoom = T)\n              \nkeys$group <- 1\nkeys$node_id <- keys$node_id-1\nSubs$ingredient_A <- Subs$ingredient_A-1\nSubs$ingredient_B <- Subs$ingredient_B-1\nkeys$group[keys$name == \"cocoa powder\"] <- 2\nforceNetwork(Links = Subs,Nodes = keys,Source = \"ingredient_A\", Target = \"ingredient_B\",NodeID = \"name\",Group = \"group\",zoom = TRUE, opacityNoHover = T)\n\nFrom <- \"from:\"\nsxsw <- \"+#SXSW2016\"\n\ntweets_list <- data.frame(stringsAsFactors=FALSE) \n\nfor(j in 1:100)\n{\n  #if(j %% 5 == 0){Sys.sleep(600)}\n    tweets_object<-do.call(\"rbind\", lapply(searchTwitter(paste(From,unique_usernames[j],sxsw,sep = \"\"),resultType = \"recent\",lang= \"en\"), as.data.frame))\n    tweets_list <- merge(tweets_list, tweets_object,  all=T)\n}\n\n\n\ntest_twet1 <- do.call(\"rbind\", lapply(searchTwitter(paste(From,unique_usernames[3],sxsw,sep = \"\"),lang= \"en\"), as.data.frame))\n\ntest_twet2 <- do.call(\"rbind\", lapply(searchTwitter(paste(From,unique_usernames[4],sxsw,sep = \"\"),lang= \"en\"), as.data.frame))\n\ntest_twet3 <- merge(test_twet3,test_twet2, all = T)\n\n\ntweets_list_1 <- data.frame(stringsAsFactors=FALSE) \n\nfor(j in 91:100)\n{\n  tweets_object<-do.call(\"rbind\",lapply(searchTwitter(paste(From,unique_usernames[j],sxsw,sep = \"\"),lang= \"en\"), as.data.frame))\n  tweets_list_1 <- merge(tweets_list_1, tweets_object,  all=T)\n}\n\ntweets_list <- merge(tweets_list, tweets_list_1,  all=T)\n\n\n\n\n\n",
+    "created" : 1459788060342.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1609360162",
+    "id" : "9AEDCE75",
+    "lastKnownWriteTime" : 1461540406,
+    "path" : "~/Assignment 4/q1.R",
+    "project_path" : "q1.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 12,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

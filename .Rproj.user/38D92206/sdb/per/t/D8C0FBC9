@@ -1,0 +1,25 @@
+{
+    "contents" : "",
+    "created" : 1460432722263.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "D8C0FBC9",
+    "lastKnownWriteTime" : 7011605692497750387,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "bhy5fjotvp",
+        "caption" : "tweets_freq",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=tweets_freq&cache_key=bhy5fjotvp",
+        "displayedObservations" : 88,
+        "environment" : "",
+        "object" : "tweets_freq",
+        "totalObservations" : 88,
+        "variables" : 2
+    },
+    "relative_order" : 13,
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

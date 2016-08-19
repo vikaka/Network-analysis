@@ -1,0 +1,152 @@
+---
+title: "a4part3"
+author: "Vishesh Kakarala"
+date: "April 12, 2016"
+output: html_document
+---
+```{r}
+library('stats')
+library('networkD3')
+library('igraph')
+library('twitteR')
+library('RCurl')
+library('ngram')
+library('js')
+library('tau')
+library('tm')
+library('stringdist')
+```
+
+
+# Question 3.   Developing a Language Model (for n-gram word sequences) (10 points).    
+
+a) Download Tweets from each user above that mention the hashtag you selected (over an appropriate time period). 
+
+we download all tweets from each user for #SXSW2016 using the Recent mode in Searctwitter function to limit the time period
+
+```{r echo = FALSE}
+tweets_list <- read.csv("~/Assignment 4/tweetsxsw", stringsAsFactors=FALSE)
+```
+
+```{r eval= FALSE}
+From <- "from:"
+sxsw <- "+#SXSW2016"
+
+tweets_list <- data.frame(stringsAsFactors=FALSE) 
+
+for(j in 1:100)
+{
+  
+    tweets_object<-do.call("rbind",lapply(searchTwitter(paste(From,unique_usernames[j],sxsw,sep = ""),lang= "en"), as.data.frame))
+    if(length(tweets_object)>0){
+    tweets_list <- merge(tweets_list, tweets_object,  all=T)
+    }
+}
+```
+
+```{r}
+# store only the  text from the tweet in a separate object
+
+tweets_total<- tweets_list$text
+
+
+```
+
+b) For n = 1, n = 2 and n = 3, submit the list of the 10 most frequent sequences. 
+```{r}
+# first we  process the ngrams for n=1, n=2 & n=3 using package tm
+# here we create a corpus for analysis, in order to create a corpus we need to set up the source
+tweets_source <- VectorSource(tweets_total)
+corpus <- Corpus(tweets_source)
+#After we have the corpus we do basic text processing to remove certain terms for better analysis
+corpus <- tm_map(corpus, removePunctuation)
+corpus <- tm_map(corpus, stripWhitespace)
+corpus <- tm_map(corpus, removeWords, stopwords("english"))
+
+ngram1 <- DocumentTermMatrix(corpus)
+ngram1_2 <- as.matrix(ngram1)
+
+frequency_ngram1 <- colSums(ngram1_2)
+frequency_ngram1 <- sort(frequency_ngram1, decreasing=TRUE)
+#for n= 2 ngram we use function bigram tokenizer to split words as a bigram
+BigramTokenizer <-
+  function(x)
+    unlist(lapply(ngrams(words(x), 2), paste, collapse = " "), use.names = FALSE)
+
+ngram2 <- TermDocumentMatrix(corpus, control = list(tokenize = BigramTokenizer))
+ngram2_2 <- as.matrix(ngram2)
+
+frequency_ngram2 <- rowSums(ngram2_2)
+frequency_ngram2 <- sort(frequency_ngram2, decreasing=TRUE)
+
+#for n=3 ngram we use a funtion trigram tokenizer to split the words as a trigram
+
+trigramTokenizer <-
+  function(x)
+    unlist(lapply(ngrams(words(x), 3), paste, collapse = " "), use.names = FALSE)
+
+ngram3 <- TermDocumentMatrix(corpus, control = list(tokenize = trigramTokenizer))
+ngram3_1 <- as.matrix(ngram3)
+
+frequency_ngram3 <- rowSums(ngram3_1)
+frequency_ngram3 <- sort(frequency_ngram3, decreasing=TRUE)
+
+
+# now we submit the top 10 sequences for each n value
+frequency_ngram1[1:10]
+frequency_ngram2[1:10]
+frequency_ngram3[1:10]
+
+```
+
+c) For n = 1, n = 2 and n = 3, submit the sum of all frequencies of all sequences for        that n. 
+```{r}
+sum(frequency_ngram1)
+
+sum(frequency_ngram2)
+
+sum(frequency_ngram3)
+
+```
+d) Using these frequencies, generate a distance measure for individuals (e.g. they    share the X most common frequency 3-gram terms, or 2-gram terms, or 1-gram term). How does this network look compared to the network generated in  question 2? 
+```{r warning= F}
+# here we consolidate the usernames and tweets from the users into a data frame
+
+tweets_freq <- data.frame(screennames = tweets_list$screenName,tweets = tweets_list$text ,  stringsAsFactors = F)
+
+tweets_freq <- aggregate(tweets~screennames, data = tweets_freq, concat, sep = " ")
+
+tweets_freq$tweets <- iconv(tweets_freq$tweets, "UTF-8")
+
+
+# Here the dataframe containing the network information and distnace measure between the users is created
+
+ngramnetwork <- data.frame(src = character(), target = character(), distance = numeric(), stringsAsFactors = F)
+
+#we intitialize the network data frame with the source and atrget information
+
+for (i in 1:length(tweets_freq$screennames))
+{
+  k = i+1
+  for (j in k:length(tweets_freq$screennames))
+  {
+    ngramnetworkdata <- data.frame(src=tweets_freq$screennames[i], target=tweets_freq$screennames[j], stringsAsFactors = F)
+    ngramnetwork <- merge(ngramnetwork,ngramnetworkdata, all = T) 
+  
+  }
+  
+}
+
+# we calculate the distance measure between each user based on the string distance measured between all the tweets for the user with # SXSW
+for (k in 1:length(ngramnetwork$src))
+{
+
+  ngramnetwork$distance[k]<-stringdist(as.character(tweets_freq$tweets[tweets_freq$screennames == ngramnetwork$src[k]]),as.character(tweets_freq$tweets[tweets_freq$screennames == ngramnetwork$target[k]]), method = "qgram", q = 3)
+}  
+# we remove rows where there is no common frequency terms
+ngramnetwork <- na.omit(ngramnetwork)  
+
+#here we visualize th network
+simpleNetwork(ngramnetwork, zoom = t)
+```
+From the network we can see that network based on commonly used terms is highly interconnected which is not the case with the network graph in question 2

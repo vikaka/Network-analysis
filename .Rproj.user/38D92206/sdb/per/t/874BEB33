@@ -1,0 +1,17 @@
+{
+    "contents" : "---\ntitle: \"HW4\"\nauthor: \"Qi Wang\"\ndate: \"April 3, 2016\"\noutput: html_document\n---\n\nsetup credentials: note you need to change to your own credentials\n\n```{r}\nrequire(twitteR)\nrequire(RCurl)\nconsumer_key <-'vjZtM2RVJtgUr5JSWzQDAzsJ0'\nconsumer_secret <-'Xc6WGx3BqDx4PKNBvBJoTYUVH1H8QUjLtd7LMbfOgqkC3RCVir'\naccess_token <-'554027021-c1weT8JNkkwYKKhaEqXU5kwwnmtgtUm0hgvFna06'\naccess_secret <-'qi8JCvRYNkusc5ie4kSvwYa0KviB5tQepAKEcVA0ojqa1'\nsetup_twitter_oauth(consumer_key, consumer_secret, access_token, access_secret)\n```\n\nsearch using keywords:\nI use 10 here for simplicity, large number of n will cause the program running slow or reaching the twitter request limit, result in throwing a following error: In twInterfaceObj$doAPICall(\"account/verify_credentials\", ...) : Rate limit encountered & retry limit reached - returning partial results\n\nChange 10 to at least 200, so we would most likely get at least 100 unique users.\nsearchTwitter returns List\n\n```{r, echo=FALSE}\nmyTweets <- searchTwitter(\"#SXSW2016\", n=10, lang=\"en\")\nmyTweets\n```\n\nExtract the usernames:\nChange k = 100, if you want to process 100 users\n\n```{r}\nk = 3\ntweetsDF <- twListToDF(myTweets)\nnameDF <- tweetsDF[, c(\"screenName\")]\nuniqueNameDF <- unique(nameDF)\nhundredNamesDF <- head(uniqueNameDF, k)\nhundredNamesDF\n```\n\nuse networkD3 to plot the graph, igraph to assess the degree distribution of the graph\n\n```{r}\n# Load package\nrequire(networkD3)\nrequire(igraph)\n\nnetwork <- data.frame(src=character(), target=character(), stringsAsFactors=FALSE) \n\nfor(i in 1:length(hundredNamesDF)){\n  start <- getUser(hundredNamesDF[i])\n  friends.object<-lookupUsers(start$getFriendIDs())\n  follower.object<-lookupUsers(start$getFollowerIDs())\n  \n  n<-20 \n  friends <- sapply(friends.object[1:n],screenName)\n  followers <- sapply(follower.object[1:n],screenName)\n  \n  # networkData <- merge(data.frame(src='TheRealJCHONESE', target=friends), \n  # data.frame(src=followers, target='TheRealJCHONES'),  all=T)\n  # Merge: joins two data frames by common columns or row names\n  networkData <- data.frame(src=hundredNamesDF[i], target=friends)\n  network <- merge(network, networkData,  all=T)\n  networkData <- data.frame(src=followers, target=hundredNamesDF[i])\n  network <- merge(network, networkData,  all=T)\n}\n\n# degree assess\ng <- graph.data.frame(network, directed = F)\n\ndegree(g, mode = \"total\")\n\ndegree_distribution(g)\n\n# Plot\nsimpleNetwork(network, zoom = T, linkDistance = 60, opacity = 0.5, linkColour = \"grey\", nodeColour = \"purple\",\n  nodeClickColour = \"red\", textColour = \"blue\")\n```",
+    "created" : 1459901855615.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4271452397",
+    "id" : "874BEB33",
+    "lastKnownWriteTime" : 1460238436,
+    "path" : "C:/Users/Vishesh Kakarala/Downloads/hw4SampleSol.Rmd",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "type" : "r_markdown"
+}
